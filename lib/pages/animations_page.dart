@@ -21,16 +21,20 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
   AnimationController animationController;
   Animation<double> rotation;
   Animation<double> opacity;
+  Animation<double> moveRight;
 
   @override
   void initState() {
     super.initState();
-    animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
+    animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 3000));
     rotation = Tween(begin: 0.0, end:2.0 * Math.pi).animate(
       CurvedAnimation(parent: animationController, curve: Curves.elasticOut)
     );
     opacity = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: animationController, curve: Interval(0, 0.25, curve: Curves.easeOut))
+    );
+    moveRight = Tween(begin: -100.0, end: 100.0).animate(
+       CurvedAnimation(parent: animationController, curve: Interval(0, 0.20, curve: Curves.easeOut))
     );
     
     animationController.addListener( () => {
@@ -57,14 +61,17 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
        child: Rectangulo(),
        builder: (BuildContext context, Widget childRectangulo) {
          print(rotation.value.toString());
-         return Transform.rotate(
-           angle: rotation.value,
-          //  child: Rectangulo(),
-           child: Opacity(
-             opacity: opacity.value,
-             child: childRectangulo, 
-           ),
-          );
+         return Transform.translate(
+            offset: Offset(moveRight.value, 0),
+            child: Transform.rotate(
+            angle: rotation.value,
+            //  child: Rectangulo(),
+            child: Opacity(
+               opacity: opacity.value,
+               child: childRectangulo, 
+             ),
+            ),
+         );
        },
      );
   }
