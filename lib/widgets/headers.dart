@@ -21,7 +21,51 @@ import 'package:flutter/material.dart';
 //     );
 //   }
 // }
-class HeaderSquare extends StatelessWidget {
+// class HeaderSquare extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: double.infinity,
+//       width: double.infinity,
+//       // color: Color(0xff615AAB),
+//       child: CustomPaint(
+//         painter: _HeaderDiagonalPainter(),
+//       ),
+//     );
+//   }        
+// }
+        
+// class _HeaderDiagonalPainter extends CustomPainter {
+//   @override
+//   void paint(Canvas canvas, Size size) {
+
+//     final pencil = new Paint();
+
+//     pencil.color = Color(0xff615AAB);
+//     pencil.style = PaintingStyle.fill;
+//     pencil.strokeWidth = 20;
+
+//     final path = new Path();
+//     path.moveTo(0, size.height * 0.5);
+//     path.lineTo(size.width, size.height * 0.4);
+//     path.lineTo(size.width, 0);
+//     path.lineTo(0, 0);
+//     path.lineTo(0, size.height * 0.5);
+   
+//     canvas.drawPath(path, pencil);
+    
+//   }
+
+//   @override
+//   bool shouldRepaint(CustomPainter oldDelegate) {
+//     return true;
+//   }
+
+// }
+
+// TRIANGLE
+
+class HeaderTriangle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,13 +73,13 @@ class HeaderSquare extends StatelessWidget {
       width: double.infinity,
       // color: Color(0xff615AAB),
       child: CustomPaint(
-        painter: _HeaderDiagonalPainter(),
+        painter: _HeaderTrianglelPainter(),
       ),
     );
   }        
 }
         
-class _HeaderDiagonalPainter extends CustomPainter {
+class _HeaderTrianglelPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
 
@@ -46,12 +90,10 @@ class _HeaderDiagonalPainter extends CustomPainter {
     pencil.strokeWidth = 20;
 
     final path = new Path();
-    path.moveTo(0, size.height * 0.5);
-    path.lineTo(size.width, size.height * 0.4);
-    path.lineTo(size.width, 0);
+    path.moveTo(size.width, 0);
+    path.lineTo(size.width, size.height);
     path.lineTo(0, 0);
-    path.lineTo(0, size.height * 0.5);
-   
+
     canvas.drawPath(path, pencil);
     
   }
