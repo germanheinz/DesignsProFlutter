@@ -29,7 +29,9 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
     rotation = Tween(begin: 0.0, end:2.0 * Math.pi).animate(
       CurvedAnimation(parent: animationController, curve: Curves.elasticOut)
     );
-    opacity = Tween(begin: 0.0, end: 1.0).animate(animationController);
+    opacity = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: animationController, curve: Interval(0, 0.25, curve: Curves.easeOut))
+    );
     
     animationController.addListener( () => {
       print(animationController.status),
