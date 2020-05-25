@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as Math;
 
 class AnimationsPage extends StatelessWidget {
   @override
@@ -22,9 +23,16 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
 
   @override
   void initState() {
-    animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
-    rotation = Tween(begin: 0.0, end:2.0).animate(animationController);
     super.initState();
+    animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
+    rotation = Tween(begin: 0.0, end:2.0 * Math.pi).animate(animationController);
+    
+    animationController.addListener( () => {
+      print(animationController.status),
+      if(animationController.status == AnimationStatus.completed){
+        animationController.reverse()
+      }
+    });
   }
   @override
   void dispose() {
@@ -36,7 +44,7 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
   Widget build(BuildContext context) {
 
     //Boton de reproduccion - Play
-    animationController.forward();
+    animationController.repeat();
 
      return AnimatedBuilder(
        animation: animationController,
