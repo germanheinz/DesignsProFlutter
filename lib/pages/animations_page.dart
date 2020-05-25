@@ -22,6 +22,7 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
   Animation<double> rotation;
   Animation<double> opacity;
   Animation<double> moveRight;
+  Animation<double> reSize;
 
   @override
   void initState() {
@@ -36,12 +37,15 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
     moveRight = Tween(begin: -100.0, end: 100.0).animate(
        CurvedAnimation(parent: animationController, curve: Interval(0, 0.20, curve: Curves.easeOut))
     );
+    reSize = Tween(begin: 0.0, end: 2.0).animate(
+       CurvedAnimation(parent: animationController, curve: Interval(0, 0.20, curve: Curves.easeOut))
+    );
     
     animationController.addListener( () => {
       print(animationController.status),
-      if(animationController.status == AnimationStatus.completed){
-        animationController.reverse()
-      }
+      // if(animationController.status == AnimationStatus.completed){
+      //   animationController.reverse()
+      // }
     });
   }
   @override
@@ -68,7 +72,10 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
             //  child: Rectangulo(),
             child: Opacity(
                opacity: opacity.value,
-               child: childRectangulo, 
+               child: Transform.scale(
+                 scale: reSize.value,
+                 child: childRectangulo
+                ), 
              ),
             ),
          );
