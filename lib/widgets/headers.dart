@@ -107,53 +107,96 @@ import 'package:flutter/material.dart';
 
 // HEADER PEAK
 
-class HeaderPeak extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      // color: Color(0xff615AAB),
-      child: CustomPaint(
-        painter: _HeaderPeaklPainter(),
-      ),
-    );
-  }        
-}
+// class HeaderPeak extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: double.infinity,
+//       width: double.infinity,
+//       // color: Color(0xff615AAB),
+//       child: CustomPaint(
+//         painter: _HeaderPeaklPainter(),
+//       ),
+//     );
+//   }        
+// }
         
-class _HeaderPeaklPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
+// class _HeaderPeaklPainter extends CustomPainter {
+//   @override
+//   void paint(Canvas canvas, Size size) {
 
-    final pencil = new Paint();
+//     final pencil = new Paint();
 
-    pencil.color = Color(0xff615AAB);
-    pencil.style = PaintingStyle.fill;
-    pencil.strokeWidth = 20;
+//     pencil.color = Color(0xff615AAB);
+//     pencil.style = PaintingStyle.fill;
+//     pencil.strokeWidth = 20;
 
-    final path = new Path();
-    path.moveTo(0, 0);
-    path.lineTo(0, size.height * 0.28);
-    path.lineTo(size.width * 0.5, size.height * 0.35);
-    path.lineTo(size.width, size.height * 0.28);
-    path.lineTo(size.width, 0);
+//     final path = new Path();
+//     path.moveTo(0, 0);
+//     path.lineTo(0, size.height * 0.28);
+//     path.lineTo(size.width * 0.5, size.height * 0.35);
+//     path.lineTo(size.width, size.height * 0.28);
+//     path.lineTo(size.width, 0);
     
-    // path.lineTo(0, 0);
+//     // path.lineTo(0, 0);
 
-    canvas.drawPath(path, pencil);
+//     canvas.drawPath(path, pencil);
     
-  }
+//   }
 
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
+//   @override
+//   bool shouldRepaint(CustomPainter oldDelegate) {
+//     return true;
+//   }
 
-}
+// }
 
 // HEADER CURVE
 
-class HeaderCurve extends StatelessWidget {
+// class HeaderCurve extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: double.infinity,
+//       width: double.infinity,
+//       // color: Color(0xff615AAB),
+//       child: CustomPaint(
+//         painter: _HeaderCurvePainter(),
+//       ),
+//     );
+//   }        
+// }
+        
+// class _HeaderCurvePainter extends CustomPainter {
+//   @override
+//   void paint(Canvas canvas, Size size) {
+
+//     final pencil = new Paint();
+
+//     pencil.color = Color(0xff615AAB);
+//     pencil.style = PaintingStyle.fill;
+//     pencil.strokeWidth = 20;
+
+//     final path = new Path();
+//     path.lineTo(0, size.height * 0.25);
+//     path.quadraticBezierTo(size.width * 0.5, size.height * 0.40, size.width, size.height * 0.25);
+//     path.lineTo(size.width, 0);
+    
+    
+//     // path.lineTo(0, 0);
+
+//     canvas.drawPath(path, pencil);
+    
+//   }
+
+//   @override
+//   bool shouldRepaint(CustomPainter oldDelegate) {
+//     return true;
+//   }
+
+// }
+
+class HeaderWave extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -161,13 +204,13 @@ class HeaderCurve extends StatelessWidget {
       width: double.infinity,
       // color: Color(0xff615AAB),
       child: CustomPaint(
-        painter: _HeaderCurvePainter(),
+        painter: HeaderWavePainter(),
       ),
     );
   }        
 }
         
-class _HeaderCurvePainter extends CustomPainter {
+class HeaderWavePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
 
@@ -179,7 +222,8 @@ class _HeaderCurvePainter extends CustomPainter {
 
     final path = new Path();
     path.lineTo(0, size.height * 0.25);
-    path.quadraticBezierTo(size.width * 0.5, size.height * 0.40, size.width, size.height * 0.25);
+    path.quadraticBezierTo(size.width * 0.25, size.height * 0.30, size.width * 0.5, size.height * 0.25);
+    path.quadraticBezierTo(size.width * 0.75, size.height * 0.20, size.width, size.height * 0.25);
     path.lineTo(size.width, 0);
     
     
