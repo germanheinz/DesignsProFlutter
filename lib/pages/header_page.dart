@@ -9,7 +9,7 @@ class HeadersPage extends StatelessWidget {
       // body: Center(
       //   child: Text('Header_Page'),
       // ),
-      body: HeaderWave(),
+      body: HeaderWaveGradient(),
     );
   }
 }
