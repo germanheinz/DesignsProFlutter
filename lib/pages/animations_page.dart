@@ -20,12 +20,16 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
   
   AnimationController animationController;
   Animation<double> rotation;
+  Animation<double> opacity;
 
   @override
   void initState() {
     super.initState();
     animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 4000));
-    rotation = Tween(begin: 0.0, end:2.0 * Math.pi).animate(animationController);
+    rotation = Tween(begin: 0.0, end:2.0 * Math.pi).animate(
+      CurvedAnimation(parent: animationController, curve: Curves.elasticOut)
+    );
+    opacity = Tween(begin: 0.0, end: 1.0).animate(animationController);
     
     animationController.addListener( () => {
       print(animationController.status),
@@ -48,12 +52,16 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
 
      return AnimatedBuilder(
        animation: animationController,
-      //  child: child,
-       builder: (BuildContext context, Widget child) {
+       child: Rectangulo(),
+       builder: (BuildContext context, Widget childRectangulo) {
          print(rotation.value.toString());
          return Transform.rotate(
            angle: rotation.value,
-           child: Rectangulo()
+          //  child: Rectangulo(),
+           child: Opacity(
+             opacity: opacity.value,
+             child: childRectangulo, 
+           ),
           );
        },
      );
