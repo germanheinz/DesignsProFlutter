@@ -34,7 +34,21 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return Rectangulo();
+
+    //Boton de reproduccion - Play
+    animationController.forward();
+
+     return AnimatedBuilder(
+       animation: animationController,
+      //  child: child,
+       builder: (BuildContext context, Widget child) {
+         print(rotation.value.toString());
+         return Transform.rotate(
+           angle: rotation.value,
+           child: Rectangulo()
+          );
+       },
+     );
   }
   
 }
