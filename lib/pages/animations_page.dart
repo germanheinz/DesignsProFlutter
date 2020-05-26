@@ -42,7 +42,7 @@ class _SquareAnimatedState extends State<SquareAnimated> with SingleTickerProvid
     );
     
     animationController.addListener( () => {
-      print(animationController.status),
+      // print(animationController.status),
       // if(animationController.status == AnimationStatus.completed){
       //   animationController.reverse()
       // }
