@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PinterestButton{
   final Function onPressed;
@@ -21,23 +22,39 @@ class PinterestMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Container(
-        child: _MenuItems(items),
-        width: 250,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(100)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.black,
-              blurRadius: 9,
-              spreadRadius: -5
-            )
-          ]
-        ),
-      ),
+      // child: _MenuItems(items),
+        child: ChangeNotifierProvider(
+          create: (_) => new _MenuModel(),
+          child: PinterestMenuBackground(
+            child: _MenuItems(items))),
     );
+  }
+}
+
+class PinterestMenuBackground extends StatelessWidget {
+  
+  final Widget child;
+
+  const PinterestMenuBackground({@required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+    child: child,
+    width: 250,
+    height: 50,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.all(Radius.circular(100)),
+      boxShadow: <BoxShadow>[
+        BoxShadow(
+          color: Colors.black,
+          blurRadius: 9,
+          spreadRadius: -5
+        )
+      ]
+    ),
+      );
   }
 }
 
@@ -65,8 +82,34 @@ class _PinterestMenuButton extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Icon(item.icon),
+
+    final itemSelected = Provider.of<_MenuModel>(context).itemSelected;
+
+    return GestureDetector(
+        onTap: (){
+          Provider.of<_MenuModel>(context, listen: false).itemSelected = index;
+          item.onPressed();
+        },
+        behavior: HitTestBehavior.translucent,
+        child: Container(
+        child: Icon(
+          item.icon,
+          size: ( itemSelected == index ) ? 30 : 25,
+          color: ( itemSelected == index ) ? Colors.red : Colors.blueGrey,
+          ),
+      ),
     );
+  }
+}
+
+class _MenuModel with ChangeNotifier{
+  
+  int _itemSelected = 0;
+
+  int get itemSelected => this._itemSelected;
+
+  set itemSelected(int index){
+    this._itemSelected = index;
+    notifyListeners();
   }
 }
