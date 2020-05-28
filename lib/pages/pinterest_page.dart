@@ -1,6 +1,7 @@
 import 'package:designs_pro/widgets/pinterest_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 
 
 class PinterestPage extends StatelessWidget {
@@ -8,16 +9,18 @@ class PinterestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(
-      // body: PinterestMenu(),
-      body: Stack(
-        children: <Widget>[
-          PinterestGrid(),
-          _PinterestMenuLocation(),
-            // PinterestMenu()
-        ],
-      ),
-   );
+    return ChangeNotifierProvider(
+        create: (_) => new _MenuModel(),
+        child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            PinterestGrid(),
+            _PinterestMenuLocation(),
+              // PinterestMenu()
+          ],
+        ),
+   ),
+    );
   }
 }
 
@@ -28,6 +31,7 @@ class _PinterestMenuLocation extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final widthScreen = MediaQuery.of(context).size.width;
+    final show        = Provider.of<_MenuModel>(context).getShow;
 
     return Positioned(
       bottom: 30,
@@ -35,7 +39,9 @@ class _PinterestMenuLocation extends StatelessWidget {
         color: Colors.red,
         width: widthScreen,
         child: Align(
-          child: PinterestMenu(),
+          child: PinterestMenu(
+            show: show,
+          ),
         ),
       ));
   }
@@ -59,11 +65,11 @@ class _PinterestGridState extends State<PinterestGrid> {
   void initState() { 
     super.initState();
     scrollController.addListener(() {
-      // print('ScrollListenner ${scrollController.offset}');
+
       if(scrollController.offset > lastPositionScroll) {
-        print('ocultar menu');
+        Provider.of<_MenuModel>(context, listen: false).setShow = true;
       } else { 
-        print('mostrar menu');
+        Provider.of<_MenuModel>(context, listen: false).setShow = false;
       }
       lastPositionScroll = scrollController.offset;
     });
@@ -110,5 +116,17 @@ class _PinterestItem extends StatelessWidget {
             child: new Text('$index'),
           ),
         ));
+  }
+}
+
+class _MenuModel with ChangeNotifier{
+
+  bool _show = true;
+  
+  bool get getShow => this._show;
+
+  set setShow(bool value){
+    this._show = value;
+    notifyListeners();
   }
 }
