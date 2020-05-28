@@ -1,0 +1,16 @@
+
+import 'package:designs_pro/widgets/header_sport.dart';
+import 'package:flutter/material.dart';
+
+
+class SportsPage extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: HeaderSport()
+     ),
+   );
+  }
+}
