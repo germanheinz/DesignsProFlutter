@@ -41,6 +41,12 @@ class _PinterestMenuLocation extends StatelessWidget {
         child: Align(
           child: PinterestMenu(
             show: show,
+            items: [
+              PinterestButton(icon: Icons.pie_chart, onPressed: (){print('Icon pie_chart');}),
+              PinterestButton(icon: Icons.search, onPressed: (){print('Icon pie_chart');}),
+              PinterestButton(icon: Icons.home, onPressed: (){print('Icon pie_chart');}),
+              
+            ]
           ),
         ),
       ));
@@ -67,9 +73,9 @@ class _PinterestGridState extends State<PinterestGrid> {
     scrollController.addListener(() {
 
       if(scrollController.offset > lastPositionScroll) {
-        Provider.of<_MenuModel>(context, listen: false).setShow = true;
-      } else { 
         Provider.of<_MenuModel>(context, listen: false).setShow = false;
+      } else { 
+        Provider.of<_MenuModel>(context, listen: false).setShow = true;
       }
       lastPositionScroll = scrollController.offset;
     });

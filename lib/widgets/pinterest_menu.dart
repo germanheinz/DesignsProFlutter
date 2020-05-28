@@ -5,23 +5,15 @@ class PinterestButton{
   final Function onPressed;
   final IconData icon;
 
-
   PinterestButton({@required this.onPressed, @required this.icon});
 }
-
-
 
 class PinterestMenu extends StatelessWidget {
 
   final bool show;
+  final List<PinterestButton> items;
   
-  PinterestMenu({this.show = true});
-  
-  final List<PinterestButton> items = [
-    PinterestButton(icon: Icons.pie_chart, onPressed: (){print('Icon pie_chart');}),
-    PinterestButton(icon: Icons.search, onPressed: (){print('Icon pie_chart');}),
-    PinterestButton(icon: Icons.home, onPressed: (){print('Icon pie_chart');}),
-  ];
+  PinterestMenu({this.show = true, @required this.items});
   
   @override
   Widget build(BuildContext context) {
