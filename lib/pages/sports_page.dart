@@ -8,7 +8,13 @@ class SportsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     body: HeaderSport()
+     body: HeaderSport(
+       icon: Icons.add,
+       title: 'test',
+       subTitle: 'test2',
+       color1: Colors.grey,
+       color2: Colors.indigo,
+     )
    );
   }
 }
