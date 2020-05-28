@@ -1,37 +1,76 @@
 import 'package:designs_pro/lab/slideshow_page.dart';
-import 'package:designs_pro/models/slider_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Slideshow extends StatelessWidget {
 
-  List<Widget> slides;
+  final List<Widget> slides;
   final bool dotsUp;
-  Color primaryColor;
-  Color secondyColor;
+  final Color primaryColor;
+  final Color secondyColor;
+  final double bulletPrimary;
+  final double bulletSecondary;
 
-  Slideshow({@required this.slides, this.primaryColor, this.secondyColor, this.dotsUp = false});
+  Slideshow({@required this.slides,
+                       this.dotsUp          = false,
+                       this.primaryColor    = Colors.blue,
+                       this.secondyColor    = Colors.grey,
+                       this.bulletPrimary   = 12.0,
+                       this.bulletSecondary = 12.0
+            });
 
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => new SliderModel(),
+      create: (_) => new SlideShowModel(),
       child: SafeArea(
           child: Center(
-          child: Column(
-            children: <Widget>[
-              if(this.dotsUp) _Dots(this.slides.length,this.primaryColor, this.secondyColor),
-              Expanded(
-                child: _Slides(this.slides),
-              ),
-              if(!this.dotsUp) _Dots(this.slides.length,this.primaryColor, this.secondyColor),
-              
-            ],
+          child: Builder(
+            builder: (BuildContext context) {
+
+            Provider.of<SlideShowModel>(context).primaryColor = this.primaryColor;
+
+            Provider.of<SlideShowModel>(context).secondyColor = this.secondyColor;
+
+            Provider.of<SlideShowModel>(context).bulletPrimary = this.bulletPrimary;
+
+            Provider.of<SlideShowModel>(context).bulletSecondary= this.bulletSecondary;
+
+            return _CreateSlideshowStructure(slides: slides, dotsUp: dotsUp);
+            },
           )
         ),
       ),
       );
+  }
+}
+
+class _CreateSlideshowStructure extends StatelessWidget {
+  const _CreateSlideshowStructure({
+    Key key,
+    this.dotsUp,
+    @required this.slides,
+
+  }) : super(key: key);
+
+  final List<Widget> slides;
+  final bool dotsUp;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        // if(this.dotsUp) _Dots(this.slides.length),
+        Expanded(
+          child: _Slides(this.slides),
+        ),
+        //if(!this.dotsUp) _Dots(this.slides.length),
+        _Dots(this.slides.length),
+
+      ],
+    );
   }
 }
 
@@ -42,20 +81,20 @@ class _Slides extends StatefulWidget {
 
 
   _Slides(this.slides);
-  
+
   @override
   __SlidesState createState() => __SlidesState();
 
 }
 
 class __SlidesState extends State<_Slides> {
-  
+
    @override
   void initState() {
     super.initState();
     pageViewController.addListener(() => {
       // print('Current Page: ${pageViewController.page}'),
-      Provider.of<SliderModel>(context, listen: false).currentPage = pageViewController.page
+      Provider.of<SlideShowModel>(context, listen: false).currentPage = pageViewController.page
     });
   }
 
@@ -70,11 +109,6 @@ class __SlidesState extends State<_Slides> {
     return Container(
       child: PageView(
         controller: pageViewController,
-        // children: <Widget>[
-        //   SvgPicture.asset('assets/svg/undraw_at_home_octe.svg'),
-        //   SvgPicture.asset('assets/svg/undraw_cohort_analysis_stny.svg'),
-        //   SvgPicture.asset('assets/svg/undraw_nature_on_screen_xkli.svg'),
-        // ],
         children: widget.slides.map((slide) => _Slide(slide)).toList(),
       ),
     );
@@ -99,12 +133,10 @@ class _Slide extends StatelessWidget {
 }
 
 class _Dots extends StatelessWidget {
-  
-  final int dotsNumbers;
-  final Color primaryColor;
-  final Color secondyColor;
 
-  _Dots(this.dotsNumbers, this.primaryColor, this.secondyColor);
+  final int dotsNumbers;
+
+  _Dots(this.dotsNumbers);
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +145,7 @@ class _Dots extends StatelessWidget {
      height: 50,
      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(this.dotsNumbers, (index) => _Dot(index, this.primaryColor, this.secondyColor)),
+        children: List.generate(this.dotsNumbers, (index) => _Dot(index)),
      ),
     );
   }
@@ -122,25 +154,75 @@ class _Dots extends StatelessWidget {
 class _Dot extends StatelessWidget {
 
   final int index;
-  final Color primaryColor;
-  final Color secondyColor;
 
-  _Dot(this.index, this.primaryColor, this.secondyColor);
+  _Dot(this.index);
 
   @override
   Widget build(BuildContext context) {
 
-    final pageViewIndex = Provider.of<SliderModel>(context).currentPage;
+    final slideShowModel = Provider.of<SlideShowModel>(context);
+
+    double bulletSize = 0;
+    Color color;
+
+    if(slideShowModel.currentPage >= index - 0.5 && slideShowModel.currentPage < index + 0.5){
+      bulletSize = slideShowModel.bulletPrimary;
+      color      = slideShowModel.primaryColor;
+    }else{
+      bulletSize = slideShowModel.bulletSecondary;
+      color      = slideShowModel.secondyColor;
+    }
+
+
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
-      height: 10,
-      width: 10,
+      height: bulletSize,
+      width: bulletSize,
       margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: (pageViewIndex >= index - 0.5 && pageViewIndex < index + 0.5) ? this.primaryColor : this.secondyColor,
+        color: color,
         shape: BoxShape.circle,
-        
+
       ),
     );
+  }
+}
+class SlideShowModel with ChangeNotifier{
+  double _currentPage     = 0;
+  Color  _primaryColor    = Colors.blue;
+  Color  _secondyColor    = Colors.red;
+  double _bulletPrimary = 12.0;
+  double _bulletSecondary = 12.0;
+
+
+  double get currentPage => this._currentPage;
+
+  set currentPage(double currentPage){
+    this._currentPage = currentPage;
+    notifyListeners();
+  }
+  Color get primaryColor => this._primaryColor;
+
+  set primaryColor(Color primaryColor){
+    this._primaryColor = primaryColor;
+    // notifyListeners();
+  }
+  Color get secondyColor => this._secondyColor;
+
+  set secondyColor(Color secondyColor){
+    this._secondyColor = secondyColor;
+    // notifyListeners();
+  }
+  double get bulletPrimary => this._bulletPrimary;
+
+  set bulletPrimary(double bulletPrimary){
+    this._bulletPrimary = bulletPrimary;
+    // notifyListeners();
+  }
+  double get bulletSecondary => this._bulletSecondary;
+
+  set bulletSecondary(double bulletSecondary){
+    this._bulletSecondary = bulletSecondary;
+    // notifyListeners();
   }
 }
